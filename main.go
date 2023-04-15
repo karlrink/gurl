@@ -5,14 +5,13 @@ import (
     "fmt"
     "io/ioutil"
     "os"
+    "github.com/karlrink/gurl/http"
     "github.com/karlrink/gurl/cmd"
 )
 
-
-
 func main() {
 
-    //fmt.Printf("Random string: %s\n", cmd.RandStr(20))
+    fmt.Printf("Random string: %s\n", cmd.RandStr(20))
 
     url := os.Args[1]
 
@@ -24,7 +23,7 @@ func main() {
 
     method := "GET"
 
-    response, err := cmd.Response(method, url, header, data)
+    response, err := http.Request(method, url, header, data)
     if err != nil {
         fmt.Printf("Failed GET: %v \n", err)
         os.Exit(1)
@@ -51,4 +50,3 @@ func main() {
 
 
 }
-
