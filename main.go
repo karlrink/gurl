@@ -2,30 +2,33 @@
 package main
 
 import (
+    "bufio"
     "fmt"
     "io/ioutil"
     "os"
     "github.com/karlrink/gurl/http"
-    "github.com/karlrink/gurl/cmd"
 )
 
 func main() {
 
-    fmt.Printf("Random string: %s\n", cmd.RandStr(20))
-
     url := os.Args[1]
 
+    stdin := bufio.NewReader(os.Stdin)
+
+    requestBody, err := ioutil.ReadAll(stdin)
+    if err != nil {
+        fmt.Printf("Failed to read request body: %v \n", err)
+        os.Exit(1)
+    }
+
+
     header := map[string]string{
-        "Content-Type": "text/html;charset=utf-8",
+        "Content-Type": "application/json",
 	}
 
-    data := map[string]string{}
-
-    method := "GET"
-
-    response, err := http.Request(method, url, header, data)
+    response, err := http.Request("POST", url, header, requestBody)
     if err != nil {
-        fmt.Printf("Failed GET: %v \n", err)
+        fmt.Printf("Failed HTTP: %v \n", err)
         os.Exit(1)
     }
 
